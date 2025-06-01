@@ -5,9 +5,16 @@ import tailwind from '@astrojs/tailwind'
 import { remarkReadingTime } from './src/utils/readTime.ts'
 import { siteConfig } from './src/data/site.config'
 
+// 환경변수를 통한 설정
+const isProduction = process.env.NODE_ENV === 'production'
+const isGitHubPages = process.env.GITHUB_PAGES === 'true'
+const basePath = process.env.BASE_PATH || undefined
+
 // https://astro.build/config
 export default defineConfig({
 	site: siteConfig.site,
+	base: isProduction && isGitHubPages ? basePath : undefined,
+	output: isProduction ? 'static' : undefined,
 	markdown: {
 		remarkPlugins: [remarkReadingTime],
 		drafts: true,
