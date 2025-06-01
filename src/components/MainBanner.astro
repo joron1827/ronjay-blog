@@ -8,21 +8,9 @@ const stacks = ['AWS', 'Docker', 'Kubernetes', 'DevOps']
     <div class="title">
       안녕하세요!
       <br />
-      <strong>
-        <span class="rotating-text" data-texts={JSON.stringify(stacks)}>AWS</span>
-      </strong>
-      <span>를 좋아하는</span>
+      <strong><span class="rotating-text" data-texts={JSON.stringify(stacks)}>AWS</span></strong>를 좋아하는
       <br />
-      데브옵스 엔지니어 <strong>조론</strong>입니다.
-    </div>
-
-    <div class="social-wrapper">
-      <a href="https://github.com/joronpark" target="_blank" rel="noopener noreferrer" class="social-button">
-        GitHub
-      </a>
-      <a href="https://linkedin.com/in/joronpark" target="_blank" rel="noopener noreferrer" class="social-button">
-        LinkedIn
-      </a>
+      데브옵스 엔지니어 <strong>조성찬</strong>입니다.
     </div>
   </div>
 </section>
@@ -40,7 +28,7 @@ const stacks = ['AWS', 'Docker', 'Kubernetes', 'DevOps']
   .intro-wrapper {
     white-space: nowrap;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     position: relative;
     font-size: 40px;
     line-height: 1.2;
@@ -48,6 +36,7 @@ const stacks = ['AWS', 'Docker', 'Kubernetes', 'DevOps']
 
   .title {
     width: 100%;
+    text-align: center;
   }
 
   .title strong {
@@ -57,48 +46,29 @@ const stacks = ['AWS', 'Docker', 'Kubernetes', 'DevOps']
 
   .rotating-text {
     position: relative;
+    display: inline;
   }
 
   .rotating-text::after {
     content: '|';
     animation: blink 0.8s cubic-bezier(0.68, 0.01, 0.01, 0.99) infinite;
     margin-left: 2px;
+    opacity: 1;
+  }
+
+  .rotating-text.typing::after {
+    animation: none;
+    opacity: 1;
+  }
+
+  .rotating-text.deleting::after {
+    animation: none;
+    opacity: 1;
   }
 
   @keyframes blink {
     0%, 100% { opacity: 0; }
     50% { opacity: 1; }
-  }
-
-  .social-wrapper {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-end;
-    gap: 10px;
-  }
-
-  .social-button {
-    color: var(--color-text);
-    font-size: 18px;
-    text-decoration: none;
-    position: relative;
-    transition: all 0.2s ease;
-  }
-
-  .social-button::after {
-    content: '';
-    position: absolute;
-    width: 0;
-    height: 1px;
-    bottom: -2px;
-    left: 0;
-    background-color: currentColor;
-    transition: width 0.2s ease;
-  }
-
-  .social-button:hover::after {
-    width: 100%;
   }
 
   @media (max-width: 768px) {
@@ -108,37 +78,78 @@ const stacks = ['AWS', 'Docker', 'Kubernetes', 'DevOps']
     }
 
     .intro-wrapper {
-      flex-direction: column;
       font-size: 27px;
-    }
-
-    .social-wrapper {
-      flex-direction: row;
-      align-items: flex-start;
-      justify-content: flex-start;
-      gap: 15px;
-      margin-top: 10px;
     }
   }
 </style>
 
 <script>
-  // Rotating text animation
+  // Typing effect for rotating text
   const rotatingText = document.querySelector('.rotating-text') as HTMLElement;
+  
   if (rotatingText) {
     const texts = JSON.parse(rotatingText.dataset.texts || '[]');
     let currentIndex = 0;
+    let currentText = texts[0] || 'AWS';
+    let isDeleting = false;
+    let charIndex = currentText.length;
     
-    function rotateText() {
-      if (texts.length > 1) {
-        currentIndex = (currentIndex + 1) % texts.length;
-        rotatingText.textContent = texts[currentIndex];
+    // 타이핑 속도 설정
+    const typeSpeed = 100; // 타이핑 속도 (ms)
+    const deleteSpeed = 50; // 삭제 속도 (ms)
+    const pauseTime = 2000; // 완성된 단어 표시 시간 (ms)
+    const deletePauseTime = 500; // 삭제 완료 후 대기 시간 (ms)
+
+    function typeEffect() {
+      const currentFullText = texts[currentIndex];
+      
+      if (!isDeleting) {
+        // 타이핑 중
+        rotatingText.textContent = currentFullText.substring(0, charIndex);
+        rotatingText.classList.add('typing');
+        rotatingText.classList.remove('deleting');
+        charIndex++;
+        
+        if (charIndex > currentFullText.length) {
+          // 타이핑 완료, 잠시 대기 후 삭제 시작
+          isDeleting = true;
+          rotatingText.classList.remove('typing');
+          setTimeout(typeEffect, pauseTime);
+          return;
+        }
+        
+        setTimeout(typeEffect, typeSpeed);
+      } else {
+        // 삭제 중
+        rotatingText.textContent = currentFullText.substring(0, charIndex);
+        rotatingText.classList.add('deleting');
+        rotatingText.classList.remove('typing');
+        charIndex--;
+        
+        if (charIndex < 0) {
+          // 삭제 완료, 다음 텍스트로 이동
+          isDeleting = false;
+          currentIndex = (currentIndex + 1) % texts.length;
+          charIndex = 0;
+          rotatingText.classList.remove('deleting');
+          setTimeout(typeEffect, deletePauseTime);
+          return;
+        }
+        
+        setTimeout(typeEffect, deleteSpeed);
       }
     }
     
-    // Start rotation after 2 seconds, then every 3 seconds
+    // 초기 설정 후 효과 시작
+    rotatingText.textContent = currentText;
+    
+    // 2초 후 타이핑 효과 시작
     setTimeout(() => {
-      setInterval(rotateText, 3000);
+      if (texts.length > 1) {
+        isDeleting = true;
+        charIndex = currentText.length;
+        typeEffect();
+      }
     }, 2000);
   }
 </script> 
