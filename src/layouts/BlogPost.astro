@@ -5,6 +5,7 @@ import BaseLayout from '@/layouts/BaseLayout'
 import Tag from '@/components/Tag'
 import type { MarkdownHeading } from 'astro'
 import { Image } from 'astro:assets'
+import MermaidRenderer from '../components/MermaidRenderer.astro'
 
 type Props = {
 	id: CollectionEntry<'blog'>['id']
@@ -46,22 +47,20 @@ const articleDate = pubDate.toISOString()
 			</div>
 		</header>
 
-		<>
-			{
-				heroImage && (
-					<Image
-						src={heroImage}
-						width={1000}
-						height={500}
-						quality={100}
-						format='jpg'
-						loading='eager'
-						class='rounded-md w-full max-h-[300px]  md:max-h-[500px] my-8 object-cover'
-						alt={`img of ${title}`}
-					/>
-				)
-			}
-		</>
+		{
+			heroImage && (
+				<Image
+					src={heroImage}
+					width={1000}
+					height={500}
+					quality={100}
+					format='jpg'
+					loading='eager'
+					class='rounded-md w-full max-h-[300px]  md:max-h-[500px] my-8 object-cover'
+					alt={`img of ${title}`}
+				/>
+			)
+		}
 
 		<hr />
 
@@ -69,6 +68,8 @@ const articleDate = pubDate.toISOString()
 			<slot />
 		</div>
 	</article>
+	
+	<MermaidRenderer />
 </BaseLayout>
 
 <script>

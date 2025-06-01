@@ -36,6 +36,8 @@
 		"@astrojs/rss": "4.0.1",
 		"astro": "4.0.8",
 		"astro-font": "^0.0.72",
+		"mermaid": "^11.6.0",
+		"playwright": "^1.52.0",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0"
 	},

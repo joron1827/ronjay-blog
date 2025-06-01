@@ -18,12 +18,13 @@ export default defineConfig({
 	},
 	integrations: [
 		mdx({
+			remarkPlugins: [remarkReadingTime],
 			syntaxHighlight: 'shiki',
 			shikiConfig: {
 				experimentalThemes: {
 					light: 'vitesse-light',
 					dark: 'material-theme-palenight',
-				  },
+				},
 				wrap: true
 			},
 			drafts: true

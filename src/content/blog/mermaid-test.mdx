@@ -1,0 +1,58 @@
+---
+title: 'Mermaid 다이어그램 가이드'
+description: 'Mermaid를 사용하여 다양한 다이어그램을 블로그에서 활용하는 방법을 알아보세요.'
+pubDate: '2024-01-01'
+heroImage: '../../assets/images/book.jpg'
+category: 'Category 1'
+tags: ['Guide', 'Mermaid', 'Diagram']
+---
+
+## Mermaid 다이어그램 활용법
+
+이 블로그에서는 Mermaid를 사용하여 다양한 다이어그램을 작성할 수 있습니다.
+
+### 플로우차트 예시
+
+업무 프로세스나 의사결정 과정을 시각화할 때 유용합니다:
+
+```mermaid
+graph TD
+    A[프로젝트 시작] --> B{요구사항 분석}
+    B -->|명확함| C[설계 단계]
+    B -->|불명확함| D[추가 요구사항 수집]
+    D --> B
+    C --> E[개발]
+    E --> F[테스트]
+    F --> G{버그 발견?}
+    G -->|Yes| E
+    G -->|No| H[배포]
+```
+
+### 시퀀스 다이어그램 예시
+
+시스템 간의 상호작용을 표현할 때 활용할 수 있습니다:
+
+```mermaid
+sequenceDiagram
+    participant User as 사용자
+    participant Frontend as 프론트엔드
+    participant Backend as 백엔드
+    participant DB as 데이터베이스
+    
+    User->>Frontend: 로그인 요청
+    Frontend->>Backend: 인증 정보 전송
+    Backend->>DB: 사용자 정보 조회
+    DB-->>Backend: 사용자 데이터 반환
+    Backend-->>Frontend: 인증 결과
+    Frontend-->>User: 로그인 완료
+```
+
+### 기타 지원하는 다이어그램
+
+- 클래스 다이어그램 (classDiagram)
+- 상태 다이어그램 (stateDiagram)
+- 간트 차트 (gantt)
+- 파이 차트 (pie)
+- ER 다이어그램 (erDiagram)
+
+이제 블로그에서 자유롭게 다이어그램을 활용해보세요! 

@@ -227,6 +227,13 @@ declare module 'astro:content' {
   collection: "blog";
   data: InferEntrySchema<"blog">
 } & { render(): Render[".mdx"] };
+"mermaid-test.mdx": {
+	id: "mermaid-test.mdx";
+  slug: "mermaid-test";
+  body: string;
+  collection: "blog";
+  data: InferEntrySchema<"blog">
+} & { render(): Render[".mdx"] };
 };
 
 	};

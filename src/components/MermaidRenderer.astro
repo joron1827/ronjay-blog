@@ -1,0 +1,65 @@
+---
+// MermaidRenderer.astro
+---
+
+<script>
+  import mermaid from 'mermaid';
+
+  // Initialize mermaid
+  mermaid.initialize({
+    startOnLoad: false,
+    theme: 'default',
+    securityLevel: 'loose',
+    themeVariables: {
+      fontSize: '16px'
+    }
+  });
+
+  // Function to render mermaid diagrams
+  function renderMermaid() {
+    const codeBlocks = document.querySelectorAll('pre code');
+    let mermaidCount = 0;
+    
+    codeBlocks.forEach((codeElement) => {
+      const text = codeElement.textContent || '';
+      
+      // Check if it contains mermaid content
+      if (text.includes('graph ') || text.includes('sequenceDiagram') || 
+          text.includes('flowchart') || text.includes('classDiagram')) {
+        
+        const id = `mermaid-diagram-${mermaidCount++}`;
+        
+        // Create mermaid div
+        const mermaidDiv = document.createElement('div');
+        mermaidDiv.id = id;
+        mermaidDiv.className = 'mermaid';
+        mermaidDiv.style.textAlign = 'center';
+        mermaidDiv.style.margin = '20px 0';
+        mermaidDiv.textContent = text.trim();
+        
+        // Replace the pre element
+        const preElement = codeElement.closest('pre');
+        if (preElement && preElement.parentNode) {
+          preElement.parentNode.replaceChild(mermaidDiv, preElement);
+        }
+      }
+    });
+    
+    // Render all mermaid diagrams if found
+    if (mermaidCount > 0) {
+      mermaid.run();
+    }
+  }
+
+  // Initialize when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', renderMermaid);
+  } else {
+    setTimeout(renderMermaid, 100);
+  }
+  
+  // Handle Astro page transitions
+  document.addEventListener('astro:page-load', () => {
+    setTimeout(renderMermaid, 100);
+  });
+</script> 
