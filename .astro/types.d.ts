@@ -185,9 +185,9 @@ declare module 'astro:content' {
 
 	type ContentEntryMap = {
 		"blog": {
-"mermaid-test.mdx": {
-	id: "mermaid-test.mdx";
-  slug: "mermaid-test";
+"kafka-client.mdx": {
+	id: "kafka-client.mdx";
+  slug: "kafka-client";
   body: string;
   collection: "blog";
   data: InferEntrySchema<"blog">

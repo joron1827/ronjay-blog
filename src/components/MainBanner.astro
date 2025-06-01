@@ -11,13 +11,13 @@ const stacks = ['DevOps', 'Cloud Native', 'Kubernetes', 'Python']
         <img src={profileImage.src} alt="조성찬 프로필" />
       </div>
       <div class="profile-text">
-        <div class="greeting">안녕하세요!</div>
+        <div class="greeting text-gray-600 dark:text-gray-300">안녕하세요!</div>
         <div class="title">
-          <strong><span class="rotating-text" data-texts={JSON.stringify(stacks)}></span></strong>엔지니어
+          <strong><span class="rotating-text text-black dark:text-white" data-texts={JSON.stringify(stacks)}></span></strong>엔지니어
           <br />
-          <strong class="name">조성찬</strong>입니다.
+          <strong class="name text-black dark:text-white">조성찬</strong>입니다.
         </div>
-        <div class="description">
+        <div class="description text-gray-600 dark:text-gray-300">
           클라우드 네이티브 기술과 DevOps에 열정을 가진 엔지니어입니다.
         </div>
       </div>
@@ -78,7 +78,6 @@ const stacks = ['DevOps', 'Cloud Native', 'Kubernetes', 'Python']
 
   .greeting {
     font-size: 24px;
-    color: #666;
     margin-bottom: 10px;
     font-weight: 300;
   }
@@ -95,13 +94,11 @@ const stacks = ['DevOps', 'Cloud Native', 'Kubernetes', 'Python']
   }
 
   .name {
-    color: #000;
     font-weight: 700;
   }
 
   .description {
     font-size: 18px;
-    color: #666;
     line-height: 1.6;
     margin-top: 15px;
     font-weight: 300;
@@ -110,7 +107,6 @@ const stacks = ['DevOps', 'Cloud Native', 'Kubernetes', 'Python']
   .rotating-text {
     position: relative;
     display: inline;
-    color: #000;
     font-weight: 700;
   }
 
