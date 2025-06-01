@@ -1,0 +1,46 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import { getCollection } from 'astro:content'
+import FeaturedPostColumn from '../components/FeaturedPostColumn.astro'
+
+const posts = await getCollection('blog')
+const sortedPosts = posts.sort((a, b) => 
+  new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime()
+)
+
+// 카테고리별로 포스트 그룹화
+const categoriesMap = new Map()
+
+for (const post of sortedPosts) {
+  const category = post.data.category || 'General'
+  if (!categoriesMap.has(category)) {
+    categoriesMap.set(category, [])
+  }
+  categoriesMap.get(category).push(post)
+}
+
+const categories = Array.from(categoriesMap.entries())
+---
+
+<BaseLayout 
+  title="Posts" 
+  description="All blog posts organized by category"
+>
+  <main class="max-w-4xl mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-8">Posts</h1>
+    
+    {categories.map(([categoryName, categoryPosts]) => (
+      <FeaturedPostColumn 
+        title={categoryName}
+        posts={categoryPosts}
+        fill={true}
+      />
+    ))}
+  </main>
+</BaseLayout>
+
+<style>
+  main {
+    margin-top: 20px;
+  }
+</style> 

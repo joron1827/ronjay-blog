@@ -1,22 +1,67 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout'
-import TitlePage from '@/components/TitlePage'
 import { getTags } from '@/utils'
 const tags = await getTags()
 ---
 
 <BaseLayout title='Tags'>
-	<TitlePage title='Tags' />
-	<div class='flex justify-center flex-wrap gap-4'>
-		{
-			tags.map((tag) => (
+	<main class="max-w-4xl mx-auto px-4 py-8">
+		<h1 class="text-3xl font-bold mb-8">Tags</h1>
+		
+		<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+			{tags.map((tag) => (
 				<a
 					href={`/tags/${tag}`}
-					class='inline-block bg-gray-200  rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2'
+					class="tag-card"
 				>
-					#{tag}
+					<span class="tag-symbol">#</span>
+					<span class="tag-name">{tag}</span>
 				</a>
-			))
-		}
-	</div>
+			))}
+		</div>
+	</main>
 </BaseLayout>
+
+<style>
+	main {
+		margin-top: 20px;
+	}
+
+	.tag-card {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		padding: 16px;
+		border: 1px solid rgba(0, 0, 0, 0.1);
+		border-radius: 8px;
+		text-decoration: none;
+		color: inherit;
+		transition: all 0.2s ease;
+		background: var(--color-bg);
+	}
+
+	.tag-card:hover {
+		border-color: var(--color-text);
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+		transform: translateY(-2px);
+	}
+
+	.tag-symbol {
+		font-size: 18px;
+		font-weight: 600;
+		color: var(--color-primary, #4f46e5);
+	}
+
+	.tag-name {
+		font-size: 14px;
+		font-weight: 500;
+	}
+
+	:global(.dark) .tag-card {
+		border-color: rgba(255, 255, 255, 0.1);
+	}
+
+	:global(.dark) .tag-card:hover {
+		border-color: var(--color-text);
+	}
+</style>

@@ -1,0 +1,144 @@
+---
+// MainBanner.astro
+const stacks = ['AWS', 'Docker', 'Kubernetes', 'DevOps']
+---
+
+<section class="main-banner">
+  <div class="intro-wrapper">
+    <div class="title">
+      안녕하세요!
+      <br />
+      <strong>
+        <span class="rotating-text" data-texts={JSON.stringify(stacks)}>AWS</span>
+      </strong>
+      <span>를 좋아하는</span>
+      <br />
+      데브옵스 엔지니어 <strong>조론</strong>입니다.
+    </div>
+
+    <div class="social-wrapper">
+      <a href="https://github.com/joronpark" target="_blank" rel="noopener noreferrer" class="social-button">
+        GitHub
+      </a>
+      <a href="https://linkedin.com/in/joronpark" target="_blank" rel="noopener noreferrer" class="social-button">
+        LinkedIn
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .main-banner {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    margin: 60px 0 130px 0;
+    font-family: inherit;
+  }
+
+  .intro-wrapper {
+    white-space: nowrap;
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    font-size: 40px;
+    line-height: 1.2;
+  }
+
+  .title {
+    width: 100%;
+  }
+
+  .title strong {
+    display: inline-block;
+    font-weight: 600;
+  }
+
+  .rotating-text {
+    position: relative;
+  }
+
+  .rotating-text::after {
+    content: '|';
+    animation: blink 0.8s cubic-bezier(0.68, 0.01, 0.01, 0.99) infinite;
+    margin-left: 2px;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 1; }
+  }
+
+  .social-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-end;
+    gap: 10px;
+  }
+
+  .social-button {
+    color: var(--color-text);
+    font-size: 18px;
+    text-decoration: none;
+    position: relative;
+    transition: all 0.2s ease;
+  }
+
+  .social-button::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 1px;
+    bottom: -2px;
+    left: 0;
+    background-color: currentColor;
+    transition: width 0.2s ease;
+  }
+
+  .social-button:hover::after {
+    width: 100%;
+  }
+
+  @media (max-width: 768px) {
+    .main-banner {
+      margin: 40px 0 100px 0;
+      padding: 0 10px;
+    }
+
+    .intro-wrapper {
+      flex-direction: column;
+      font-size: 27px;
+    }
+
+    .social-wrapper {
+      flex-direction: row;
+      align-items: flex-start;
+      justify-content: flex-start;
+      gap: 15px;
+      margin-top: 10px;
+    }
+  }
+</style>
+
+<script>
+  // Rotating text animation
+  const rotatingText = document.querySelector('.rotating-text') as HTMLElement;
+  if (rotatingText) {
+    const texts = JSON.parse(rotatingText.dataset.texts || '[]');
+    let currentIndex = 0;
+    
+    function rotateText() {
+      if (texts.length > 1) {
+        currentIndex = (currentIndex + 1) % texts.length;
+        rotatingText.textContent = texts[currentIndex];
+      }
+    }
+    
+    // Start rotation after 2 seconds, then every 3 seconds
+    setTimeout(() => {
+      setInterval(rotateText, 3000);
+    }, 2000);
+  }
+</script> 

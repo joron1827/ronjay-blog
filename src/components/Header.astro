@@ -4,62 +4,110 @@ import MenuIcon from './icons/MenuIcon.astro'
 import Search from '@/components/Search'
 import TagIcon from './icons/TagIcon.astro'
 import ToggleTheme from './ToggleTheme.astro'
-import { SOCIALNETWORKS } from '@/data/links'
 ---
 
-<header class='relative flex items-center h-12 font-semibold'>
-	<a class='text-lg mr-auto' href='/'>Home</a>
+<header class='relative flex items-center justify-between h-16 px-4 font-semibold border-b border-gray-200 dark:border-gray-800'>
+	<a class='text-xl font-bold' href='/'>Home</a>
 
-	<div
-		id='astro-header-drawer'
-		class='shadow rounded-l-lg md:bg-transparent dark:md:bg-transparent bg-white dark:bg-[#0a0910] md:shadow-none md:rounded-none md:border-none md:h-auto md:static absolute transition-transform duration-300 ease-in translate-x-96 md:translate-x-0 top-12 -right-5 pl-4 pt-6 pb-4 md:p-0 h-[200px] w-[200px] z-50'
-	>
-		<nav
-			class='flex h-full flex-col justify-between gap-12 text-left md:flex-row md:w-full md:gap-5'
-		>
-			<div
-				class='flex flex-col gap-4 md:flex-row md:border-r-2 border-black pr-4 dark:border-white'
-			>
-				<HeaderLink href='/tags' class='flex items-center gap-1 text-2xl md:text-base'>
-					<TagIcon /> Tags
-				</HeaderLink>
-			</div>
-
-			<div class='flex justify-center items-center md:justify-end gap-3 md:p-0'>
-				{
-					SOCIALNETWORKS.map((network) => (
-						<HeaderLink class='' href={network.url} target='_blank' aria-label={network.name}>
-							<span>{<network.icon />} </span>
-						</HeaderLink>
-					))
-				}
-			</div>
-		</nav>
-	</div>
-
-	<div class='flex items-center gap-3 md:pl-3' transition:persist='navbar'>
-		<div>
-			<Search />
+	<!-- Desktop Navigation -->
+	<nav class='hidden md:flex items-center gap-8'>
+		<div class='flex items-center gap-6'>
+			<HeaderLink href='/posts' class='hover:text-gray-600 dark:hover:text-gray-300 transition-colors'>
+				Posts
+			</HeaderLink>
+			<HeaderLink href='/tags' class='flex items-center gap-1 hover:text-gray-600 dark:hover:text-gray-300 transition-colors'>
+				<TagIcon /> Tags
+			</HeaderLink>
 		</div>
+		
+		<div class='flex items-center gap-4 border-l border-gray-300 dark:border-gray-600 pl-6'>
+			<HeaderLink href='https://github.com/joronpark' target='_blank' aria-label='GitHub' class='hover:text-gray-600 dark:hover:text-gray-300 transition-colors'>
+				GitHub
+			</HeaderLink>
+			<HeaderLink href='https://linkedin.com/in/joronpark' target='_blank' aria-label='LinkedIn' class='hover:text-gray-600 dark:hover:text-gray-300 transition-colors'>
+				LinkedIn
+			</HeaderLink>
+		</div>
+	</nav>
+
+	<!-- Right side controls -->
+	<div class='flex items-center gap-3'>
+		<Search />
 		<ToggleTheme />
-		<button id='astro-header-drawer-button' type='button' class='md:ml-6 md:hidden'>
+		<button id='mobile-menu-button' type='button' class='md:hidden p-2'>
 			<MenuIcon />
 			<span class='sr-only'>Show Menu</span>
 		</button>
 	</div>
-</header>
-<script>
-	document.addEventListener('click', (event) => {
-		const menu = document.getElementById('astro-header-drawer')
-		const menuButton = document.getElementById('astro-header-drawer-button')
-		const isClickInside =
-			menu?.contains(event.target as HTMLDivElement) ||
-			menuButton?.contains(event.target as HTMLButtonElement)
 
-		if (isClickInside) {
-			menu?.classList.toggle('translate-x-96')
-		} else {
-			menu?.classList.add('translate-x-96')
+	<!-- Mobile Menu -->
+	<div
+		id='mobile-menu'
+		class='md:hidden absolute top-full left-0 right-0 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 shadow-lg transform transition-transform duration-300 ease-in-out translate-y-[-100%] opacity-0 invisible z-50'
+	>
+		<nav class='flex flex-col p-4 space-y-4'>
+			<HeaderLink href='/posts' class='text-lg hover:text-gray-600 dark:hover:text-gray-300 transition-colors'>
+				Posts
+			</HeaderLink>
+			<HeaderLink href='/tags' class='text-lg flex items-center gap-2 hover:text-gray-600 dark:hover:text-gray-300 transition-colors'>
+				<TagIcon /> Tags
+			</HeaderLink>
+			<div class='border-t border-gray-200 dark:border-gray-700 pt-4 mt-4'>
+				<div class='flex gap-4'>
+					<HeaderLink href='https://github.com/joronpark' target='_blank' aria-label='GitHub' class='hover:text-gray-600 dark:hover:text-gray-300 transition-colors'>
+						GitHub
+					</HeaderLink>
+					<HeaderLink href='https://linkedin.com/in/joronpark' target='_blank' aria-label='LinkedIn' class='hover:text-gray-600 dark:hover:text-gray-300 transition-colors'>
+						LinkedIn
+					</HeaderLink>
+				</div>
+			</div>
+		</nav>
+	</div>
+</header>
+
+<script>
+	document.addEventListener('DOMContentLoaded', () => {
+		const mobileMenuButton = document.getElementById('mobile-menu-button')
+		const mobileMenu = document.getElementById('mobile-menu')
+		
+		if (mobileMenuButton && mobileMenu) {
+			mobileMenuButton.addEventListener('click', () => {
+				const isOpen = mobileMenu.classList.contains('translate-y-0')
+				
+				if (isOpen) {
+					// Close menu
+					mobileMenu.classList.remove('translate-y-0', 'opacity-100', 'visible')
+					mobileMenu.classList.add('translate-y-[-100%]', 'opacity-0', 'invisible')
+				} else {
+					// Open menu
+					mobileMenu.classList.remove('translate-y-[-100%]', 'opacity-0', 'invisible')
+					mobileMenu.classList.add('translate-y-0', 'opacity-100', 'visible')
+				}
+			})
+			
+			// Close menu when clicking outside
+			document.addEventListener('click', (event) => {
+				if (!mobileMenuButton.contains(event.target as Node) && !mobileMenu.contains(event.target as Node)) {
+					mobileMenu.classList.remove('translate-y-0', 'opacity-100', 'visible')
+					mobileMenu.classList.add('translate-y-[-100%]', 'opacity-0', 'invisible')
+				}
+			})
 		}
 	})
 </script>
+
+<style>
+	header {
+		backdrop-filter: blur(10px);
+		background-color: rgba(255, 255, 255, 0.95);
+	}
+	
+	:global(.dark) header {
+		background-color: rgba(16, 16, 16, 0.95);
+	}
+	
+	#mobile-menu {
+		backdrop-filter: blur(10px);
+	}
+</style>

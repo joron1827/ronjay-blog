@@ -1,24 +1,65 @@
 ---
-import ListCategories from '@/components/ListCategories'
-import ListPosts from '@/components/ListPosts'
-import TitlePage from '@/components/TitlePage'
-import BaseLayout from '@/layouts/BaseLayout'
-import { getPosts } from '@/utils'
-import { siteConfig } from '@/site-config'
+import BaseLayout from '../layouts/BaseLayout.astro'
+import MainBanner from '../components/MainBanner.astro'
+import FeaturedPostColumn from '../components/FeaturedPostColumn.astro'
+import { getCollection } from 'astro:content'
 
-const MAX_POSTS = 5 // max number of posts to show on the home page
-const posts = await getPosts(MAX_POSTS)
+const posts = await getCollection('blog')
+const sortedPosts = posts.sort((a, b) => 
+	new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime()
+)
+
+// Recent Posts (최근 5개)
+const recentPosts = sortedPosts.slice(0, 5)
+
+// 카테고리별로 피처드 포스트 그룹화
+const categoriesMap = new Map()
+
+for (const post of sortedPosts) {
+	const category = post.data.category || 'General'
+	if (!categoriesMap.has(category)) {
+		categoriesMap.set(category, [])
+	}
+	categoriesMap.get(category).push(post)
+}
+
+// 각 카테고리에서 최대 3개씩만 표시
+const featuredCategories = Array.from(categoriesMap.entries())
+	.slice(0, 3)
+	.map(([categoryName, categoryPosts]) => [
+		categoryName, 
+		categoryPosts.slice(0, 3)
+	])
 ---
 
 <BaseLayout title='Home'>
-	<TitlePage title={siteConfig.title} />
-	<ListCategories />
-
-	<div>
-		<h2 class='text-lg font-medium tracking-wide text-end'>Latest Posts</h2>
-		<ListPosts FirstBig={true} posts={posts} />
-	</div>
+	<MainBanner />
+	
+	<main class="max-w-4xl mx-auto px-4">
+		<!-- Recent Posts Section -->
+		<FeaturedPostColumn 
+			title="Recent Posts"
+			posts={recentPosts}
+			fill={true}
+		/>
+		
+		<!-- Featured Categories -->
+		{featuredCategories.map(([categoryName, categoryPosts]) => (
+			<FeaturedPostColumn 
+				title={categoryName}
+				posts={categoryPosts}
+				fill={false}
+			/>
+		))}
+	</main>
 </BaseLayout>
+
+<style>
+	main {
+		margin-top: 0;
+		padding-bottom: 80px;
+	}
+</style>
 
 <script>
 	import { animate } from 'motion'
@@ -26,12 +67,11 @@ const posts = await getPosts(MAX_POSTS)
 
 	if (showAnimations) {
 		animate(
-			'.title',
+			'.main-banner',
 			{ y: [80, 0], opacity: [0, 1] },
 			{
 				duration: 2.5,
 				opacity: { duration: 3 },
-
 				offset: [0, 0.55, 0.75]
 			}
 		)
