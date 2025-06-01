@@ -8,12 +8,12 @@ import { siteConfig } from './src/data/site.config'
 // 환경변수를 통한 설정
 const isProduction = process.env.NODE_ENV === 'production'
 const isGitHubPages = process.env.GITHUB_PAGES === 'true'
-const basePath = process.env.BASE_PATH || undefined
+const baseUrl = process.env.BASE_URL || undefined
 
 // https://astro.build/config
 export default defineConfig({
 	site: siteConfig.site,
-	base: isProduction && isGitHubPages ? basePath : undefined,
+	base: isProduction && isGitHubPages ? baseUrl : undefined,
 	output: isProduction ? 'static' : undefined,
 	markdown: {
 		remarkPlugins: [remarkReadingTime],

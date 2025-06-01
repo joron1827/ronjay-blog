@@ -41,7 +41,7 @@ jobs:
           NODE_ENV: production
           GITHUB_PAGES: true
           SITE_URL: https://joron1827.github.io/ronjay-blog/
-          BASE_PATH: /ronjay-blog/
+          BASE_URL: /ronjay-blog/
         
       - name: Setup Pages
         uses: actions/configure-pages@v4
