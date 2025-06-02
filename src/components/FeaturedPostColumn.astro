@@ -9,7 +9,6 @@ interface Props {
 }
 
 const { title, posts, fill = true } = Astro.props
-const baseUrl = import.meta.env.BASE_URL
 ---
 
 <section class="featured-post-column">
@@ -20,7 +19,7 @@ const baseUrl = import.meta.env.BASE_URL
   <div class="posts-grid">
     {posts.map((post) => (
       <article class="post-card">
-        <a href={`${baseUrl}post/${post.slug}`} class="post-link">
+        <a href={`/post/${post.slug}`} class="post-link">
           {post.data.heroImage && (
             <div class="post-thumbnail">
               <Image
