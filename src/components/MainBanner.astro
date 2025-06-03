@@ -1,16 +1,26 @@
 ---
 // MainBanner.astro
-const stacks = ['AWS', 'Docker', 'Kubernetes', 'DevOps']
+import profileImage from '../assets/images/joron_profile.jpeg'
+const stacks = ['DevOps', 'Cloud Native', 'Kubernetes', 'Python']
 ---
 
 <section class="main-banner">
-  <div class="intro-wrapper">
-    <div class="title">
-      안녕하세요!
-      <br />
-      <strong><span class="rotating-text" data-texts={JSON.stringify(stacks)}>AWS</span></strong>를 좋아하는
-      <br />
-      데브옵스 엔지니어 <strong>조성찬</strong>입니다.
+  <div class="banner-container">
+    <div class="profile-section">
+      <div class="profile-image">
+        <img src={profileImage.src} alt="조성찬 프로필" />
+      </div>
+      <div class="profile-text">
+        <div class="greeting">안녕하세요!</div>
+        <div class="title">
+          <strong><span class="rotating-text" data-texts={JSON.stringify(stacks)}></span></strong>엔지니어
+          <br />
+          <strong class="name">조성찬</strong>입니다.
+        </div>
+        <div class="description">
+          클라우드 네이티브 기술과 DevOps에 열정을 가진 엔지니어입니다.
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -19,24 +29,64 @@ const stacks = ['AWS', 'Docker', 'Kubernetes', 'DevOps']
   .main-banner {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     width: 100%;
     margin: 60px 0 130px 0;
     font-family: inherit;
   }
 
-  .intro-wrapper {
-    white-space: nowrap;
+  .banner-container {
     display: flex;
     justify-content: center;
-    position: relative;
-    font-size: 40px;
-    line-height: 1.2;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    min-height: 400px;
+  }
+
+  .profile-section {
+    display: flex;
+    align-items: center;
+    gap: 60px;
+    /* width: 100%; */
+    max-width: 1000px;
+  }
+
+  .profile-image {
+    flex-shrink: 0;
+  }
+
+  .profile-image img {
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .profile-image img:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+  }
+
+  .profile-text {
+    flex: 1;
+    text-align: left;
+  }
+
+  .greeting {
+    font-size: 24px;
+    color: #666;
+    margin-bottom: 10px;
+    font-weight: 300;
   }
 
   .title {
-    width: 100%;
-    text-align: center;
+    font-size: 48px;
+    line-height: 1.2;
+    margin-bottom: 20px;
   }
 
   .title strong {
@@ -44,9 +94,24 @@ const stacks = ['AWS', 'Docker', 'Kubernetes', 'DevOps']
     font-weight: 600;
   }
 
+  .name {
+    color: #000;
+    font-weight: 700;
+  }
+
+  .description {
+    font-size: 18px;
+    color: #666;
+    line-height: 1.6;
+    margin-top: 15px;
+    font-weight: 300;
+  }
+
   .rotating-text {
     position: relative;
     display: inline;
+    color: #000;
+    font-weight: 700;
   }
 
   .rotating-text::after {
@@ -73,12 +138,58 @@ const stacks = ['AWS', 'Docker', 'Kubernetes', 'DevOps']
 
   @media (max-width: 768px) {
     .main-banner {
-      margin: 40px 0 100px 0;
-      padding: 0 10px;
+      margin: 40px 0 80px 0;
     }
 
-    .intro-wrapper {
-      font-size: 27px;
+    .banner-container {
+      padding: 0 20px;
+      min-height: auto;
+    }
+
+    .profile-section {
+      flex-direction: column;
+      gap: 30px;
+      text-align: center;
+    }
+
+    .profile-image img {
+      width: 200px;
+      height: 200px;
+    }
+
+    .profile-text {
+      text-align: center;
+    }
+
+    .title {
+      font-size: 32px;
+    }
+
+    .greeting {
+      font-size: 20px;
+    }
+
+    .description {
+      font-size: 16px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .banner-container {
+      padding: 0 16px;
+    }
+
+    .profile-image img {
+      width: 160px;
+      height: 160px;
+    }
+
+    .title {
+      font-size: 28px;
+    }
+
+    .greeting {
+      font-size: 18px;
     }
   }
 </style>
