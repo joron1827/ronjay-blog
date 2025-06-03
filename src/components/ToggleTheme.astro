@@ -45,11 +45,17 @@ import MoonIcon from '@/components/icons/MoonIcon'
 </theme-toggle>
 
 <script is:inline>
-	const button = document.getElementById('toggle-theme')
-
-	function setButtonPresssed() {
-		const bodyThemeIsDark = document.documentElement.classList.contains('dark')
-		button.setAttribute('aria-pressed', String(bodyThemeIsDark))
+	function setButtonPressed() {
+		const button = document.getElementById('toggle-theme')
+		if (button) {
+			const bodyThemeIsDark = document.documentElement.classList.contains('dark')
+			button.setAttribute('aria-pressed', String(bodyThemeIsDark))
+		}
 	}
-	setButtonPresssed()
+	
+	// 초기 로드 시 실행
+	setButtonPressed()
+	
+	// 페이지 전환 후 실행 (Astro View Transitions)
+	document.addEventListener('astro:after-swap', setButtonPressed)
 </script>
