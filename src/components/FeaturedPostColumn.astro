@@ -49,9 +49,6 @@ const baseUrl = import.meta.env.BASE_URL
             </div>
             <div class="post-content">
               <p class="post-description">{post.data.description}</p>
-              {post.data.category && (
-                <span class="post-category">{post.data.category}</span>
-              )}
             </div>
           </div>
         </a>
@@ -188,13 +185,13 @@ const baseUrl = import.meta.env.BASE_URL
     overflow: hidden;
   }
 
-  .post-category {
+  /* .post-category {
     font-size: 12px;
     padding: 4px 8px;
     background: rgba(0, 0, 0, 0.1);
     border-radius: 12px;
     white-space: nowrap;
-  }
+  } */
 
   @media (max-width: 768px) {
     .section-title {
@@ -254,7 +251,7 @@ const baseUrl = import.meta.env.BASE_URL
     color: rgba(255, 255, 255, 0.7);
   }
 
-  :global(.dark) .post-category {
+  /* :global(.dark) .post-category {
     background: rgba(255, 255, 255, 0.1);
-  }
+  } */
 </style> 
