@@ -5,6 +5,92 @@ const today = new Date()
 ---
 
 <footer class='flex justify-center items-center w-full px-16 h-28 border-t-2'>
-	&copy; {today.getFullYear()}
-	{siteConfig.author}. All rights reserved.
+	<div class="flex items-center gap-4 text-sm">
+		<span>&copy; {today.getFullYear()} {siteConfig.author}. All rights reserved.</span>
+		<span class="text-gray-400 dark:text-gray-600">•</span>
+		<span class="text-xs text-gray-500 dark:text-gray-400">
+			오늘 <strong id="footer-today" class="text-gray-700 dark:text-gray-300">-</strong> 
+			어제 <strong id="footer-yesterday" class="text-gray-700 dark:text-gray-300">-</strong>
+		</span>
+	</div>
 </footer>
+
+<script>
+	let isFooterCounterInitialized = false;
+	
+	function initFooterVisitorCounter() {
+		if (isFooterCounterInitialized) {
+			updateFooterDisplay();
+			return;
+		}
+		
+		const today = new Date().toDateString();
+		const sessionKey = `advanced_visited_${today}`; // AdvancedVisitorCounter와 같은 키 사용
+		
+		let visitorData = JSON.parse(localStorage.getItem('advancedVisitorData') || '{}');
+		
+		// 데이터 구조 초기화 (AdvancedVisitorCounter와 동일)
+		if (!visitorData.visits) visitorData.visits = {};
+		if (!visitorData.totalCount) visitorData.totalCount = 0;
+		
+		// 오늘 처음 방문인지 확인 (세션 스토리지 사용)
+		const hasVisitedToday = sessionStorage.getItem(sessionKey);
+		
+		if (!hasVisitedToday) {
+			// 오늘 처음 방문하는 경우에만 카운트 증가
+			if (!visitorData.visits[today]) {
+				visitorData.visits[today] = 0;
+			}
+			visitorData.visits[today]++;
+			visitorData.totalCount++;
+			
+			// 세션 스토리지에 방문 기록 (브라우저 탭이 닫힐 때까지 유지)
+			sessionStorage.setItem(sessionKey, 'true');
+			
+			// 오래된 데이터 정리 (30일 이상 된 데이터 삭제)
+			const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+			Object.keys(visitorData.visits).forEach(date => {
+				if (new Date(date) < thirtyDaysAgo) {
+					delete visitorData.visits[date];
+				}
+			});
+			
+			// 로컬 스토리지에 저장
+			localStorage.setItem('advancedVisitorData', JSON.stringify(visitorData));
+		}
+		
+		updateFooterDisplay();
+		isFooterCounterInitialized = true;
+	}
+	
+	function updateFooterDisplay() {
+		const visitorData = JSON.parse(localStorage.getItem('advancedVisitorData') || '{}');
+		const today = new Date().toDateString();
+		const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000).toDateString();
+		
+		// AdvancedVisitorCounter와 동일한 계산 로직
+		const todayCount = visitorData.visits?.[today] || 0;
+		const yesterdayCount = visitorData.visits?.[yesterday] || 0;
+		
+		const todayElement = document.getElementById('footer-today');
+		const yesterdayElement = document.getElementById('footer-yesterday');
+		
+		if (todayElement) todayElement.textContent = todayCount.toString();
+		if (yesterdayElement) yesterdayElement.textContent = yesterdayCount.toString();
+	}
+	
+	// 페이지 로드 시 실행
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', initFooterVisitorCounter);
+	} else {
+		initFooterVisitorCounter();
+	}
+	
+	document.addEventListener('astro:page-load', () => {
+		if (!isFooterCounterInitialized) {
+			initFooterVisitorCounter();
+		} else {
+			updateFooterDisplay();
+		}
+	});
+</script>
