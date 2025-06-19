@@ -185,6 +185,13 @@ declare module 'astro:content' {
 
 	type ContentEntryMap = {
 		"blog": {
+"Python---Blocking-Non-blocking-Sync-Async--GIL-.mdx": {
+	id: "Python---Blocking-Non-blocking-Sync-Async--GIL-.mdx";
+  slug: "python---blocking-non-blocking-sync-async--gil-";
+  body: string;
+  collection: "blog";
+  data: InferEntrySchema<"blog">
+} & { render(): Render[".mdx"] };
 "kafka-client.mdx": {
 	id: "kafka-client.mdx";
   slug: "kafka-client";
