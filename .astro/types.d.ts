@@ -192,6 +192,13 @@ declare module 'astro:content' {
   collection: "blog";
   data: InferEntrySchema<"blog">
 } & { render(): Render[".mdx"] };
+"container-runtime.mdx": {
+	id: "container-runtime.mdx";
+  slug: "container-runtime";
+  body: string;
+  collection: "blog";
+  data: InferEntrySchema<"blog">
+} & { render(): Render[".mdx"] };
 "kafka-client.mdx": {
 	id: "kafka-client.mdx";
   slug: "kafka-client";
