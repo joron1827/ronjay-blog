@@ -18,8 +18,15 @@ const titleSeparator = '•'
 
 const siteTitle = `${title} ${titleSeparator} ${siteConfig.title}`
 
-import { join } from 'path'
 import { AstroFont } from 'astro-font'
+
+// base URL을 고려한 폰트 경로 생성
+const getFontPath = (fontName: string) => {
+	const basePath = import.meta.env.BASE_URL.endsWith('/') 
+		? import.meta.env.BASE_URL 
+		: `${import.meta.env.BASE_URL}/`
+	return `${basePath}fonts/${fontName}`
+}
 ---
 
 <!-- Global Metadata -->
@@ -70,46 +77,46 @@ import { AstroFont } from 'astro-font'
 <AstroFont
 	config={[
 		{
-			preload: false,
-			display: 'swap',
 			name: 'Manrope',
 			fallback: 'sans-serif',
+			preload: false,
+			display: 'swap',
 			src: [
 				{
 					weight: '200',
 					style: 'normal',
-					path: join(process.cwd(), 'public', 'fonts', 'Manrope-ExtraLight.woff2')
+					path: getFontPath('Manrope-ExtraLight.woff2')
 				},
 				{
 					weight: '300',
 					style: 'normal',
-					path: join(process.cwd(), 'public', 'fonts', 'Manrope-Light.woff2')
+					path: getFontPath('Manrope-Light.woff2')
 				},
 				{
 					weight: '400',
 					style: 'normal',
-					path: join(process.cwd(), 'public', 'fonts', 'Manrope-Regular.woff2')
+					path: getFontPath('Manrope-Regular.woff2')
 				},
 				{
 					weight: '500',
 					style: 'normal',
-					path: join(process.cwd(), 'public', 'fonts', 'Manrope-Medium.woff2')
+					path: getFontPath('Manrope-Medium.woff2')
 				},
 				{
 					weight: '600',
 					style: 'normal',
-					path: join(process.cwd(), 'public', 'fonts', 'Manrope-SemiBold.woff2')
+					path: getFontPath('Manrope-SemiBold.woff2')
 				},
 				{
 					weight: '700',
-					preload: true,
 					style: 'normal',
-					path: join(process.cwd(), 'public', 'fonts', 'Manrope-Bold.woff2')
+					path: getFontPath('Manrope-Bold.woff2'),
+					preload: false  // preload 비활성화
 				},
 				{
 					weight: '800',
 					style: 'normal',
-					path: join(process.cwd(), 'public', 'fonts', 'Manrope-ExtraBold.woff2')
+					path: getFontPath('Manrope-ExtraBold.woff2')
 				}
 			]
 		}
