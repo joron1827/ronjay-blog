@@ -185,6 +185,13 @@ declare module 'astro:content' {
 
 	type ContentEntryMap = {
 		"blog": {
+"----Taint-Toleration-.mdx": {
+	id: "----Taint-Toleration-.mdx";
+  slug: "----taint-toleration-";
+  body: string;
+  collection: "blog";
+  data: InferEntrySchema<"blog">
+} & { render(): Render[".mdx"] };
 "Python---Blocking-Non-blocking-Sync-Async--GIL-.mdx": {
 	id: "Python---Blocking-Non-blocking-Sync-Async--GIL-.mdx";
   slug: "python---blocking-non-blocking-sync-async--gil-";
