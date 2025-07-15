@@ -23,10 +23,8 @@ title: '쿠버네티스에서 사용하는 독특한 표현, Taint와 Toleration
 이런 방식으로 Affinity를 사용하여 파드가 노드를 선택할 수 있지만,  
 Taint와 Toleration은 반대로 노드가 파드를 거부(제외)할 수 있는 방식으로 동작한다.
 
-즉,  
 - Affinity/NodeSelector: 파드가 "이 노드에 가고 싶다"  
 - Taint/Toleration: 노드가 "이 파드는 오지 마라" (단, Toleration이 있으면 예외적으로 허용)
-
 
 
 ## 언제 사용할 수 있는 걸까?
@@ -49,7 +47,7 @@ flowchart TD
     B -- 아니오 --> D[파드가 노드에 스케줄되지 않음]
 ```
 
-## 실전 예시
+## 예시
 
 ### 1. GPU 전용 노드 만들기
 
